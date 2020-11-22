@@ -2,10 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.resource.cci.ResultSet;
+
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -23,7 +24,7 @@ public class DownloadDao {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL,userName1,pwd);
-			String sql = "select * from t_downloadList";
+			String sql = "select * from t_downloadlist";
 			pst = (PreparedStatement) con.prepareStatement(sql);
 			rs = (ResultSet) pst.executeQuery();
 			while(rs.next()){
@@ -77,7 +78,6 @@ public class DownloadDao {
 				download.setStar(rs.getInt("star"));
 				download.setImage(rs.getString("image"));
 				download.setTime(rs.getString("time"));
-				download.setSizeStr(sizeStr);
 			}
 			con.close();
 		}catch(Exception e){

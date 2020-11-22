@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@WebServlet(urlPatterns = "/LoginController.do")
 public class LoginController extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -23,15 +24,15 @@ public class LoginController extends HttpServlet {
 		String password = request.getParameter("password");
 		String vcode = request.getParameter("vcode");
 		String checkbox = request.getParameter("checkbox");
+		UserDao userDao = new UserDao();
 		HttpSession session = request.getSession();
-		session.setAttribute("chrName", null);
+		Cookie[] cookies = request.getCookies();
 		String saveVcode = (String) session.getAttribute("verifyCode");
 		String forwardPath = "";
-		if (!vcode.equalsIgnoreCase(saveVcode)) {
+		if (!(vcode.equalsIgnoreCase(saveVcode))) {
 			request.setAttribute("info", "抱歉,验证码不正确!");
 			forwardPath = "/error.jsp";
 		} else {
-			UserDao userDao = new UserDao();
 			if (userDao.get(userName) == null) {
 				request.setAttribute("info", "抱歉,您输入的用户名不存在!");
 				forwardPath = "/error.jsp";
@@ -41,26 +42,24 @@ public class LoginController extends HttpServlet {
 					request.setAttribute("info", "抱歉,您输入的密码不正确!");
 					forwardPath = "/error.jsp";
 				} else {
+					if (checkbox != null) {
+						Cookie cookie1 = new Cookie("name", userName);
+						Cookie cookie2 = new Cookie("pwd", password);
+						cookie1.setMaxAge(60 * 60 * 24 * 7);
+						cookie2.setMaxAge(60 * 60 * 24 * 7);
+						response.addCookie(cookie1);
+						response.addCookie(cookie2);
+					}
 					session.setAttribute("currentUser", userDao.get(userName)
 							.getUserName());
 					session.setAttribute("chrName", userDao.get(userName)
 							.getChrName());
-
+					session.setAttribute("user", userDao.get(userName));
 					forwardPath = "/main.jsp";
 				}
-				if ("flag".equals(checkbox)) {
-					Cookie cookie1 = new Cookie("name", userName);
-					Cookie cookie2 = new Cookie("pwd", password);
-					cookie1.setMaxAge(7 * 24 * 60 * 60);
-					cookie2.setMaxAge(7 * 24 * 60 * 60);
-					response.addCookie(cookie1);
-					response.addCookie(cookie2);
-
-				}
-
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(forwardPath);
-			rd.forward(request, response);
 		}
+		RequestDispatcher rd = request.getRequestDispatcher(forwardPath);
+		rd.forward(request, response);
 	}
 }

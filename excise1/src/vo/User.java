@@ -6,6 +6,11 @@ public class User extends HttpServlet {
 	public User() {
 		super();
 	}
+	public User(String userName, String password) {
+		super();
+		this.userName = userName;
+		this.password = password;
+	}
 	public User(String userName, String password, String chrName) {
 		super();
 		this.userName = userName;
@@ -35,5 +40,8 @@ public class User extends HttpServlet {
 	private String userName;
 	private String password;
 	private String chrName;
-
+	
+	public String toString(){
+		return "userName="+this.userName+"  password="+this.password+"  chrName="+this.chrName;
+	}
 }

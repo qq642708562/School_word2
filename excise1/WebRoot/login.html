@@ -4,40 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>用户登录</title>
-    <link href="style.css" rel="stylesheet" />
-    <script>
-        function changeImg(){
-        document.getElementById("vcodeImg").src="CreateVerifyImage.do?t="+Math.random();
-    }
-    </script>
+    <link href="./css/login.css" rel="stylesheet" />
+    <script src="./js/jquery-3.5.1.js"></script>
+    <script src="./js/login.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body style="background-image: url(./image/3.JPG); background-position: center center; background-size: 100%;">
+<body>
+    
     <div id="loginForm">
-    <form class="box" action="login.do" method="post">
+    <form class="box" action="LoginController.do" method="post">
         <h1>Login</h1>
-        <input id="userName" type="text" name="userName" placeholder="用户名">
-        <input id="password" type="password" name="password" placeholder="密码">
-        <input id="vcode" type="text" name="vcode" placeholder="验证码"
-        style="height:15px;position: relative; top:0px; font-size:15px;"id ="text">
-        <!-- <canvas id="canvas" width="100" height="43" onclick="dj()"
-         style="cursor: pointer;border: 1px solid #ccc;
-           border-radius: 5px;"></canvas> -->
-        <img id="vcodeImg" style="cursor: pointer;" src="CreateVerifyImage.do" onclick="changeImg();" title="看不起，换一个" />
-        <input id="btLogin" type="submit" value="登&nbsp;&nbsp;录" />
+        <input id="userName" type="text" name="userName" placeholder="用户名" />
+        <span class="error"></span>
+        <input id="password" type="password" name="password"  placeholder="密码" />
+        <span class="error"></span>
+        <input id="vcode" type="text" name="vcode" placeholder="验证码" />
+        <img id="vcodeImg"  src="CreateVerifyImage.do" onclick="changeImg();" title="看不起，换一个" /><br>
+        <span id="vcodeError" class="error"></span>
+        <input id="checkbox" type="checkbox" name="checkbox" value="flag" /><span id="cookie">七天免登陆</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="./register.html">免费注册</a>
+        <input id="btLogin" type="button" onclick="jqAjaxCheckLogin()" value="登&nbsp;&nbsp;录"/>
+        <span id="checkError"></span> 
     </form>
-</div>
+    </div>
 </body>
 </html>
-
- <!-- <div id="loginForm">
-        <form action="login.do" method="post">
-            <p><input id="userName" name="userName" type="text" placeholder="用户名"></p>
-            <p><input id="password" name="password" type="password" placeholder="密码"></p>
-            <p><input id="vcode" name="vcode" type="text" placeholder="验证码">
-                <img id="vcodeImg" src="CreateVerificationCodeImage.do" onclick="changeImg();" title="看不起，换一个" />
-            </p>
-            <p>
-                <input id="btLogin" type="submit" value="登&nbsp;&nbsp;录" />
-            </p>
-        </form>
-    </div> -->
