@@ -19,7 +19,26 @@ function fillProvince() {
     });
 }
 
+var userName_correct = false;
+var name_correct = false;
+var mail_correct = false;
+var province_correct = false;
+var city_correct = false;
+var password_correct = false;
+var pwd_correct = false;
+
 function registerCheck(){
+    if(!userName_correct || !name_correct || !mail_correct || !province_correct || !city_correct 
+        || !password_correct || !pwd_correct){
+        $("#userName").blur();
+        $("#name").blur();
+        $("#mail").blur();
+        $("#province").blur();
+        $("#city").blur();
+        $("#password").blur();
+        $("#pwd").blur();
+        return;
+    }
     var flag;
     if($('#userName').val()==""||$('#name').val()==""||$('#mail').val()==""||$('#province').val()==""||
     $('#city').val()==""||$('#password').val()==""||$('#pwd').val()==""){
@@ -56,6 +75,7 @@ function registerCheck(){
 }
 
 $(document).ready(function () {
+    fillProvince();
     $("#userName").blur(function () {
         var $name = $('#userName').val();
         var reg =  /^[a-zA-Z][a-zA-Z0-9_]{3,15}$/; 
@@ -66,6 +86,7 @@ $(document).ready(function () {
             $("#nameError").html('用户名只能使用英文字母、数字和下划线,以字母开头,长度为4到15个字符<br>');
         }else{
             $("#nameError").text('');
+            userName_correct = true;
         }
     });
     $("#name").blur(function () {
@@ -77,6 +98,7 @@ $(document).ready(function () {
             $("#realnameError").html('真实姓名只能是2-4长度的中文<br>');
         }else{
             $("#realnameError").text('');
+            name_correct = true;
         }
     });
     $("#mail").blur(function () {
@@ -88,6 +110,7 @@ $(document).ready(function () {
             $("#emailError").html('请输入正确的邮箱格式<br>');
         }else{
             $("#emailError").text('');
+            mail_correct = true;
         }
     });
     $("#password").blur(function () {
@@ -99,6 +122,7 @@ $(document).ready(function () {
             $("#pwdError").html('请输入6~15位的密码<br>');
         }else{
             $("#pwdError").text('');
+            password_correct = true;
         }
     });
     $("#pwd").blur(function () {
@@ -110,15 +134,16 @@ $(document).ready(function () {
             $("#pwdError2").html('密码不一致<br>');
         }else{
             $("#pwdError2").text('');
+            pwd_correct = true;
         }
     });
-    fillProvince();
     $("#province").change(function () {
         if ($("#province").val() == "") {
             $("#provinceError").css("color", "red");
             $("#provinceError").html("必须选择省份<br>");
         }else{
             $("#provinceError").text("");
+            province_correct = true;
             var provinceCode = $("#province").val();
             $.ajax({
                 type: "post",
@@ -142,13 +167,31 @@ $(document).ready(function () {
         }
 
     });
-
+    $("#province").blur(function () {
+        var $name = $('#province').val();
+        if ($("#province").val() == "") {
+            $("#provinceError").html('必须选择省份<br>');
+        }else{
+            $("#provinceError").text('');
+            province_correct = true;
+        }
+    });
     $("#city").change(function () {
         if ($("#city").val() == "") {
             $("#cityError").css("color", "red");
             $("#cityError").html("必须选择城市<br>");
         }else{
             $("#cityError").text("");
+            city_correct = true;
+        }
+    });
+    $("#city").blur(function () {
+        var $name = $('#city').val();
+        if ($("#city").val() == "") {
+            $("#cityError").html('必须选择城市<br>');
+        }else{
+            $("#cityError").text('');
+            province_correct = true;
         }
     });
 });

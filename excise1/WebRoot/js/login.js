@@ -2,39 +2,17 @@ function changeImg(){
     document.getElementById("vcodeImg").src="CreateVerifyImage.do?t="+Math.random();
 }
 
-$(document).ready(function(){
-    $("#userName").blur(function(){
-        var $name=$('#userName');
-        if ($name.val().length==0)
-        {
-         $name.next().text('用户名不能为空');
-            // $("#s1").text('用户名不能为空');
-        }else{
-         $name.next().text('');  
-        }
-    });
-    $("#password").blur(function(){
-        var $name=$('#password');
-        if ($name.val().length==0)
-        {
-         $name.next().html('密码不能为空<br>');
-        }else{
-            $name.next().text('');  
-        }
-    });
-    $("#vcode").blur(function(){
-        var $name=$('#vcode');
-        if ($name.val().length==0)
-        {
-         $("#vcodeError").html('验证码不能为空<br>');
-        }else{
-         $("#vcodeError").text(''); 
-        }
-    });
-});
+var userName_correct = false;
+var password_correct = false;
+var vcode_correct = false;
 
 function jqAjaxCheckLogin() {
-
+    if(!userName_correct || !password_correct || !vcode_correct){
+        $("#userName").blur();
+        $("#password").blur();
+        $("#vcode").blur();
+        return;
+    }
     var data = {
         userName: $("#userName").val(),
         password: $("#password").val(),
@@ -60,6 +38,39 @@ function jqAjaxCheckLogin() {
     });
 }
 
+$(document).ready(function(){
+    $("#userName").blur(function(){
+        var $name=$('#userName');
+        if ($name.val().length==0)
+        {
+         $name.next().text('用户名不能为空');
+            // $("#s1").text('用户名不能为空');
+        }else{
+         $name.next().text('');  
+         userName_correct = true;
+        }
+    });
+    $("#password").blur(function(){
+        var $name=$('#password');
+        if ($name.val().length==0)
+        {
+         $name.next().html('密码不能为空<br>');
+        }else{
+            $name.next().text('');  
+            password_correct = true;
+        }
+    });
+    $("#vcode").blur(function(){
+        var $name=$('#vcode');
+        if ($name.val().length==0)
+        {
+         $("#vcodeError").html('验证码不能为空<br>');
+        }else{
+         $("#vcodeError").text(''); 
+         vcode_correct = true;
+        }
+    });
+});
 
 // var xmlHttp;
 
