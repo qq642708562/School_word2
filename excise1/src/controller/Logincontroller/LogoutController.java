@@ -22,11 +22,8 @@ public class LogoutController extends HttpServlet {
 		
 		User user = new User();
 		HttpSession session = request.getSession();
-		user = (User) session.getAttribute("user");
-		String userName = user.getUserName();
-		String password = user.getPassword();
-		Cookie cookie1 = new Cookie(userName+"name", null);
-		Cookie cookie2 = new Cookie(userName+"pwd", null);
+		Cookie cookie1 = new Cookie("Cookie1", null);
+		Cookie cookie2 = new Cookie("Cookie2", null);
 		cookie1.setMaxAge(0);
 		cookie2.setMaxAge(0);
 		response.addCookie(cookie1);

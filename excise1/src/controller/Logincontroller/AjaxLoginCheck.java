@@ -59,8 +59,8 @@ public class AjaxLoginCheck extends HttpServlet {
 							.getChrName());
 					session.setAttribute("user", userDao.get(userName));
 					if(checkbox!=null){
-						Cookie cookie1 = new Cookie(userName+"name", userName);
-						Cookie cookie2 = new Cookie(userName+"pwd", password);
+						Cookie cookie1 = new Cookie("Cookie1", userName);
+						Cookie cookie2 = new Cookie("Cookie2", password);
 						cookie1.setMaxAge(60 * 60 * 24 * 7);
 						cookie2.setMaxAge(60 * 60 * 24 * 7);
 						response.addCookie(cookie1);

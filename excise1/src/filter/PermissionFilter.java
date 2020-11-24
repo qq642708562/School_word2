@@ -35,73 +35,50 @@ public class PermissionFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		String path = request.getServletPath();
-		// System.out.println("«Î«Ûµÿ÷∑url-pattern:"+path);
+//		 System.out.println("«Î«Ûµÿ÷∑url-pattern:"+path);
 		UserDao userDao = new UserDao();
 		HttpSession session = request.getSession();
 		Cookie[] cookies = request.getCookies();
 		ArrayList<User> list = userDao.getAll();
 		
+		System.out.println("111");
 		if(cookies!=null){
 			for(Cookie cookie:cookies){
 				System.out.println(cookie.getName()+"---"+cookie.getValue());
 			}
 		}
-		
-		boolean nameresult = false;
-		boolean pwdresult = false;
-		String rname = null;
-		String rpwd = null ;
-		
-		if (cookies != null) {
-			for (Cookie a : cookies) {
 
-				for (User u : list) {
-					 String name = u.getUserName();
-					 String password = u.getPassword();
-					 if((name+"name").equals(a.getName())){
-						 if(a.getValue().equals(name)){
-							 nameresult = true;
-							 rname=name;
-						 }
-					 }
-					 if((name+"pwd").equals(a.getName())){
-						 if(a.getValue().equals(password)){
-							 pwdresult = true;
-							 rpwd = password;
-						 }
-					 }
+		String cname=null;
+		String cpwd=null;
+		boolean result=false;
+		if (cookies != null) {
+			for(Cookie cookie:cookies){
+				if("Cookie1".equals(cookie.getName())){
+					cname=cookie.getValue();
 				}
-//				if (a.getName().equals("name")) {
-//					if (a.getValue().equals("admin")) {
-//						nameresult = true;
-//					}
-//				}
+				if("Cookie2".equals(cookie.getName())){
+					cpwd=cookie.getValue();
+				}
 			}
 		}
-		if (nameresult != false && pwdresult !=false) {
-			String name = null;
-			String password = null;
-//			for (Cookie c : cookies) {
-//				if (c.getName().equals("name")) {
-//					name = c.getValue();
-//				}
-//			}
-			for (Cookie c : cookies) {
-				if (c.getName().equals(rname+"name")) {
-					name = c.getValue();
-				}
-				if (c.getName().equals(rname+"pwd")) {
-					password = c.getValue();
+		if(cname != null && cpwd != null){
+			for(User user:list){
+				String uname=user.getUserName();
+				String upwd=user.getPassword();
+				if(cname.equals(uname)&&cpwd.equals(upwd)){
+					result=true;
 				}
 			}
-			if (name != null && password != null) {
-				session.setAttribute("currentUser", userDao.get(name)
+		}
+		
+
+			if (result) {
+				session.setAttribute("currentUser", userDao.get(cname)
 						.getUserName());
-				session.setAttribute("chrName", userDao.get(name).getChrName());
-				session.setAttribute("user", userDao.get(name));
+				session.setAttribute("chrName", userDao.get(cname).getChrName());
+				session.setAttribute("user", userDao.get(cname));
 				chain.doFilter(req, resp);
-			}
-		} else if (notCheckUri.indexOf(path) == -1) {
+			} else if (notCheckUri.indexOf(path) == -1) {
 			// HttpSession session = request.getSession();
 			if (session.getAttribute("currentUser") == null) {
 				request.setAttribute("info", "±ß«∏£¨ƒ˙…–Œ¥µ«¬º");
@@ -116,3 +93,53 @@ public class PermissionFilter implements Filter {
 	}
 
 }
+
+
+
+//
+//boolean nameresult = false;
+//boolean pwdresult = false;
+//String rname = null;
+//String rpwd = null ;
+
+
+//if (cookies != null) {
+//	for (Cookie a : cookies) {
+//
+//		for (User u : list) {
+//			 String name = u.getUserName();
+//			 String password = u.getPassword();
+//			 if((name+"name").equals(a.getName())){
+//				 if(a.getValue().equals(name)){
+//					 nameresult = true;
+//					 rname=name;
+//				 }
+//			 }
+//			 if((name+"pwd").equals(a.getName())){
+//				 if(a.getValue().equals(password)){
+//					 pwdresult = true;
+//					 rpwd = password;
+//				 }
+//			 }
+//		}
+//
+//	}
+//}
+
+
+//if (nameresult != false && pwdresult !=false) {
+//String name = null;
+//String password = null;
+////for (Cookie c : cookies) {
+////	if (c.getName().equals("name")) {
+////		name = c.getValue();
+////	}
+////}
+//for (Cookie c : cookies) {
+//	if (c.getName().equals(rname+"name")) {
+//		name = c.getValue();
+//	}
+//	if (c.getName().equals(rname+"pwd")) {
+//		password = c.getValue();
+//	}
+//}
